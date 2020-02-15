@@ -107,8 +107,6 @@ userSchema.pre('save', async function (next) {
         user.password = await bcrypt.hash(user.password, 8)
         //console.log(user.password)
     }
-
-
     next()
 })
 
@@ -118,6 +116,8 @@ userSchema.pre('remove', async function(next){
     await Task.deleteMany({owner:user._id})
     next()
 })
+
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

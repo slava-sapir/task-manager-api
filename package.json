@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./src/bin/www",
-    "dev": "env-cmd -f ./config/dev.env nodemon ./src/bin/www"
+    "dev": "env-cmd -f ./config/dev.env nodemon ./src/bin/www",
+    "test": "env-cmd -f ./config/test.env jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +26,10 @@
     "validator": "^12.1.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.8.3",
     "env-cmd": "^10.0.1",
-    "nodemon": "^1.18.9"
+    "jest": "^24.9.0",
+    "nodemon": "^1.18.9",
+    "supertest": "^4.0.2"
   }
 }
