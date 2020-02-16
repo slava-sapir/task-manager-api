@@ -1,6 +1,0 @@
-
-mongodb+srv://taskapi:<password>@cluster0-uunx1.mongodb.net/test
-
-mongodb+srv://taskapi:open4sap@cluster0-uunx1.mongodb.net/task-manager-api?retryWrites=true&w=majority
-
-https://sapir-task-manager.herokuapp.com/ deployed to Heroku
