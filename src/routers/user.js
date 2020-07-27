@@ -62,6 +62,19 @@ router.post('/users/login', async (req, res) => {
     
 })
 
+router.post('/unique', async (req, res) => {
+   //controller
+   try {
+        const user = await User.findByCredentials(req.body.name) 
+		if(user)
+        res.status(201).send({ available: true});
+     }
+   catch(e) {
+        res.status(400).send(e)
+   }
+    
+})
+
 
 router.post('/users/logout', auth, async (req, res) => {
     try {
