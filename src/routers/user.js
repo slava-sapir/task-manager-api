@@ -66,8 +66,7 @@ router.post('/unique', async (req, res) => {
    //controller
    try {
         const user = await User.findByCredentials(req.body.name) 
-		if(user)
-        res.status(201).send({ available: true});
+        res.status(201).send({user});
      }
    catch(e) {
         res.status(400).send(e)
