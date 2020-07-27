@@ -14,7 +14,9 @@ const router = new express.Router()
 //user fills the form -> then user submit the form:router.post('/user/login', login_controller_post)
 
 router.post('/users', async (req, res) => {
-    const user = new User(req.body)
+    const user = new User(req.body);
+	res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
 
     try {
         await user.save()
