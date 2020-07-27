@@ -13,10 +13,16 @@ const router = new express.Router()
 //router.get('/user/login',login_controller_get) render form (pug)-> 
 //user fills the form -> then user submit the form:router.post('/user/login', login_controller_post)
 
+router.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next()
+  });
+
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
-	res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	// res.header("access-control-allow-origin", "*");
+    // res.header("access-control-allow-headers", "x-requested-with");
 
     try {
         await user.save()
@@ -68,6 +74,7 @@ router.post('/users/logout', auth, async (req, res) => {
         res.send()
 
     } catch(e) {
+		
         res.status(500).send()
     }
 
