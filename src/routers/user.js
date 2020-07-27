@@ -65,7 +65,7 @@ router.post('/users/login', async (req, res) => {
 router.post('/unique', async (req, res) => {
    //controller
    try {
-        const user = await User.findByCredentials(req.body.name) 
+        const user = await User.find(req.body.name) 
         res.status(201).send({user});
      }
    catch(e) {
