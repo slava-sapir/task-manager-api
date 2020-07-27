@@ -1,0 +1,29 @@
+
+Heroku deployment
+
+https://sapir-task-manager.herokuapp.com
+
+https://sapir-weather-application.herokuapp.com
+
+https://sapir-express-library.herokuapp.com
+
+https://sapir-node3-chat-app.herokuapp.com/
+
+
+Email confirmation using sendgridAPIKey
+
+SENDGRID_API_KEY=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
+//const sendgridAPIKey = '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'
+
+MongoAtlas deployment
+
+mongodb+srv://taskapi:<password>@cluster0-uunx1.mongodb.net/test
+
+mongodb+srv://taskapi:open4sap@cluster0-uunx1.mongodb.net/task-manager-api?retryWrites=true&w=majority
+
+https://sapir-task-manager.herokuapp.com/ deployed to Heroku
+
+GITHUB
+https://github.com/slava-sapir/task-manager-api.git
+
+https://git.heroku.com/sapir-node3-chat-app.git
