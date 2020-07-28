@@ -65,8 +65,11 @@ router.post('/users/login', async (req, res) => {
 router.post('/unique', async (req, res) => {
    //controller
    try {
-        const user = await User.findOne( {name: req.body.name }) 
-        res.status(201).send({user});
+        const user = await User.findOne( {name: req.body.name}) 
+		if(user)
+        res.status(422).send({"name": "Username in use"});
+	    else 
+		res.status(200).send({"available": true});
      }
    catch(e) {
         res.status(400).send(e)
