@@ -28,16 +28,16 @@ router.post('/users', async (req, res) => {
 })
 
 // new authCheck if user signed up
-router.get('/users/signedin', auth, async (req, res) => {
+router.get('/users/signedin', async (req, res) => {
  try {
-        // const token = req.header('Authorization').replace('Bearer ', '')
-        // const decoded = jwt.verify(token, process.env.SECRET_KEY)
-        // const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+         const token = req.header('Authorization').replace('Bearer ', '')
+         const decoded = jwt.verify(token, process.env.SECRET_KEY)
+         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
     
-        if (!req.user) {
-            res.send({ authenticated: false, name: null })
+        if (!user) {
+            send({ authenticated: false, name: null })
           } else {
-		    res.send({ authenticated: true, name: req.user.name })
+		    res.send({ authenticated: true, name: user.name })
 	   }
 
     } catch (e) {
