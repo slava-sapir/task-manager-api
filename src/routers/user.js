@@ -1,17 +1,11 @@
 const express = require('express')
 const User = require('../models/user')
 const auth = require('../middleware/auth')
+const jwt = require('jsonwebtoken')
 const multer = require('multer')
 const sharp = require('sharp')
 const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const router = new express.Router()
-
-//The functions below we can break down as router and controller
-//router.post('/user/login', login_controller_post)
-//login_controller is actually function that below which 
-//renders some sort of template as: res.render('user-login',{user, token})
-//router.get('/user/login',login_controller_get) render form (pug)-> 
-//user fills the form -> then user submit the form:router.post('/user/login', login_controller_post)
 
 router.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -21,28 +15,12 @@ router.all('*', function(req, res, next) {
 
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
-	// res.header("access-control-allow-origin", "*");
-    // res.header("access-control-allow-headers", "x-requested-with");
 
     try {
         await user.save()
         sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
-        //req.cookies('tokenKey', token)- set up header before sending to the server
-        //res.cookie('tokenKey', token - another approach to send token to client using cookies)
-        //or is the way to send with authorization header:
-//   var rp = require('request-promise');
-//   options = {
-//   method: GET,
-//   uri: 'https://www.example.com/api/sample',
-//   headers: {
-//     Authorization: "Bearer <insert_your_JWT_here>"
-//     }
-//   }
-//   rp(options).then(function(res){
-//    <handle_response>
-//  }
         console.log(user, token)
     } catch (e) {
         res.status(400).send(e)
@@ -68,7 +46,7 @@ router.get('/users/signedin', async(req, res) => {
 }	
 
 router.post('/users/login', async (req, res) => {
-   //controller
+
    try {
         const user = await User.findByCredentials(req.body.email, req.body.password) 
         const token = await user.generateAuthToken()
