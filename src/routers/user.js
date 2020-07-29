@@ -35,9 +35,9 @@ router.get('/users/signedin', async (req, res) => {
          const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
     
         if (!user) {
-            send({ authenticated: false, name: null })
+            res.status(400).send({ authenticated: false, name: null })
           } else {
-		    res.send({ authenticated: true, name: user.name })
+		    res.status(201).send({ authenticated: true, name: user.name })
 	   }
 
     } catch (e) {
