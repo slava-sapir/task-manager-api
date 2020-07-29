@@ -28,7 +28,7 @@ router.post('/users', async (req, res) => {
 })
 
 // new authCheck if user signed up
-router.get('/users/signedin', async(req, res) => {
+router.get('/users/signedin', async (req, res) => {
  try {
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, process.env.SECRET_KEY)
@@ -43,7 +43,7 @@ router.get('/users/signedin', async(req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }	
-}	
+})	
 
 router.post('/users/login', async (req, res) => {
 
