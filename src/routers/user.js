@@ -52,16 +52,13 @@ router.post('/users/login', async (req, res) => {
 
    try {
         const user = await User.findByCredentials(req.body.email, req.body.password) 
-		const token = req.header('Authorization').replace('Bearer ', '')
+		//const token = req.header('Authorization').replace('Bearer ', '')
 		
-		if (!user){
-		 res.status(422).send({error: "Credentials not valid"})
+		if (user){
+		  const token = await user.generateAuthToken()
+		  res.status(201).send({user,token})
 		} 
-		 else if(!token){
-         const token = await user.generateAuthToken()
-		}
-		 res.status(201).send({user,token})
-		
+			
      } catch(e) {
         res.status(400).send(e)
      }
