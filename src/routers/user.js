@@ -8,8 +8,9 @@ const { sendWelcomeEmail, sendCancelationEmail } = require('../emails/account')
 const router = new express.Router()
 
 router.all('*', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+    res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
     next()
   });
 
@@ -17,12 +18,13 @@ router.post('/users', async (req, res) => {
     const user = new User(req.body);
 
     try {
+		
         await user.save()
         sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
         res.status(201).send({ user, token })
-        console.log(user, token)
-    } catch (e) {
+		
+        } catch (e) {
         res.status(400).send(e)
     }
 })
@@ -31,14 +33,15 @@ router.post('/users', async (req, res) => {
 router.get('/users/signedin', async (req, res) => {
  try {
          const token = req.header('Authorization').replace('Bearer ', '')
+		 
+		 if(token){
          const decoded = jwt.verify(token, process.env.SECRET_KEY)
          const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-    
-        if (!user) {
-            res.status(400).send({ authenticated: false, name: null })
-          } else {
-		    res.status(201).send({ authenticated: true, name: user.name })
-	   }
+         res.status(201).send({ authenticated: true, name: user.name })
+		 }
+        
+		else  res.status(400).send({ authenticated: false, name: null })
+          
 
     } catch (e) {
         res.status(400).send(e)
@@ -50,14 +53,18 @@ router.post('/users/login', async (req, res) => {
    try {
         const user = await User.findByCredentials(req.body.email, req.body.password) 
 		const token = req.header('Authorization').replace('Bearer ', '')
-		if (!token)
-        const token = await user.generateAuthToken()
-	
-        res.send({user,token})
-     }
-   catch(e) {
+		
+		if (!user){
+		 res.status(422).send({error: "Credentials not valid"})
+		} 
+		 else if(!token){
+         const token = await user.generateAuthToken()
+		}
+		 res.status(201).send({user,token})
+		
+     } catch(e) {
         res.status(400).send(e)
-   }
+     }
     
 })
 
@@ -78,8 +85,8 @@ router.post('/unique', async (req, res) => {
 
 
 router.post('/users/logout', auth, async (req, res) => {
+	
     try {
-      
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         })
@@ -134,10 +141,12 @@ router.get('/users/me', auth, async (req, res) => {
 // })
 
 router.get('/users', async (req, res) => {
+	
     try {
+		
         const users = await User.find({})
         res.send(users)
-    } catch (e) {
+     } catch (e) {
         res.status(500).send()
     }
 })
