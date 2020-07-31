@@ -32,19 +32,19 @@ router.post('/users', async (req, res) => {
 // new authCheck if user signed up
 router.get('/users/signedin', async (req, res) => {
  try {
-         const token = req.header('Authorization').replace('Bearer ', '')
-		 
-		 if(token){
-         const decoded = jwt.verify(token, process.env.SECRET_KEY)
-         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-         res.status(201).send({ authenticated: true, name: user.name })
+	 
+	     if(req.header('Authorization')){
+            const token = req.header('Authorization').replace('Bearer ', '')
+		    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+            const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+            res.status(201).send({ authenticated: true, name: user.name })
 		 }
-        
-		// else res.status(200).send({ authenticated: false, name: null })
+		
+		 else res.status(200).send({ authenticated: false, name: null })
           
 
     } catch (e) {
-        res.status(200).send({ authenticated: false, name: null })
+        res.status(200).send(e)
     }	
 })	
 
