@@ -44,7 +44,7 @@ router.get('/users/signedin', async (req, res) => {
           
 
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send({ authenticated: false, name: null })
     }	
 })	
 
@@ -52,7 +52,6 @@ router.post('/users/login', async (req, res) => {
 
    try {
         const user = await User.findByCredentials(req.body.email, req.body.password) 
-		//const token = req.header('Authorization').replace('Bearer ', '')
 		
 		if (user){
 		  const token = await user.generateAuthToken()
