@@ -40,11 +40,11 @@ router.get('/users/signedin', async (req, res) => {
          res.status(201).send({ authenticated: true, name: user.name })
 		 }
         
-		 else res.status(200).send({ authenticated: false, name: null })
+		// else res.status(200).send({ authenticated: false, name: null })
           
 
     } catch (e) {
-        res.status(400).send(e)
+        res.status(200).send({ authenticated: false, name: null })
     }	
 })	
 
