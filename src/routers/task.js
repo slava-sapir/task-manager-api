@@ -23,6 +23,17 @@ router.post('/tasks', auth, async (req, res) => {
 //GET /tasks?limit=1&skip=2
 //GET /tasks?sortBy=createdAt:desc
 
+router.get('/alltasks', auth, async (req, res) => {
+    try{
+       const tasks = await Task.find({owner: req.user._id})
+          res.status(200).send(tasks)
+    } 
+    catch(e) {
+       res.status(500).send()
+  }
+ }) 
+
+
  router.get('/tasks', auth, async (req, res) => {
     try{
       // const tasks = await Task.find({owner: req.user._id})
