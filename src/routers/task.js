@@ -3,6 +3,12 @@ const Task = require('../models/task')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 
+router.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	res.header("Access-Control-Allow-Methods", "GET,POST,OPTIONS,DELETE,PUT");
+    next()
+  });
 
 router.post('/tasks', auth, async (req, res) => {
   const task = new Task({
