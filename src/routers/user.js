@@ -211,7 +211,7 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
         res.status(200).send()
 })
 
-router.get('/users/me/avatar', auth, async (req, res) => {
+router.get('/users/me/avatar', auth, (req, res) => {
 	
 	try{
 		if(!req.user || !req.user.avatar){
