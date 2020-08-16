@@ -226,9 +226,9 @@ router.get('/users/:id/avatar', async(req, res) => {
 	    // // // // // // // // // // }
 	
      try {
-      const user = await user.findbyid(req.params.id)
+      const user = await user.findById(req.params.id)
       if(!user || !user.avatar){
-      throw new error()
+      throw new Error()
       }
       res.set('Content-Type', 'image/png')
       res.send(user.avatar)
