@@ -217,7 +217,7 @@ router.get('/users/me/avatar', auth, (req, res) => {
 		 if(!req.user || !req.user.avatar){
          throw new error()
 		 }
-		 res.set('Content-Type', 'image/*')
+		 res.set('Content-Type', 'image/png')
 	     res.send(req.user.avatar)
 	   
 	    } catch(e) {
