@@ -226,7 +226,7 @@ router.get('/users/:id/avatar', async(req, res) => {
 	    // // // // // // // // // // }
 	
      try {
-      const user = await user.findById(req.params.id)
+      const user = await User.findById(req.params.id)
       if(!user || !user.avatar){
       throw new Error()
       }
