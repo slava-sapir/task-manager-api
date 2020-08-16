@@ -211,18 +211,31 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
         res.status(200).send()
 })
 
-router.get('/users/me/avatar', auth, (req, res) => {
-	
-	try{
-		if(!req.user || !req.user.avatar){
-        throw new Error()
-		}
-		res.set('Content-Type', 'image/png')
-	    res.send(req.user.avatar)
-	   
-	   } catch(e) {
+router.get('/users/me/avatar', async(req, res) => {
+	try {
+		
+	    if(req.header('Authorization')){
+            const token = req.header('Authorization').replace('Bearer ', '')
+		    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+            const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+			res.set('Content-Type', 'image/png')
+			res.send(user.avatar)
+		 }
+		else res.status(200).send({ authenticated: false, name: null })
+	} 
+	catch(e)  {
 		res.status(404).send()
-		}
+	}
+	// // // // // // // // // // // // // // // try{
+		// // // // // // // // // // // // // // // if(!req.user || !req.user.avatar){
+        // // // // // // // // // // // // // // // throw new Error()
+		// // // // // // // // // // // // // // // }
+		// // // // // // // // // // // // // // // res.set('Content-Type', 'image/png')
+	    // // // // // // // // // // // // // // // res.send(req.user.avatar)
+	   
+	   // // // // // // // // // // // // // // // } catch(e) {
+		// // // // // // // // // // // // // // // res.status(404).send()
+		// // // // // // // // // // // // // // // }
 	
      // try {
      // const user = await User.findById(req.params.id)
