@@ -211,15 +211,17 @@ router.delete('/users/me/avatar', auth, async (req, res) => {
         res.status(200).send()
 })
 
-router.get('/users/me/avatar', auth, async(req, res) => {
+router.get('/users/me/avatar', async(req, res) => {
 	
 	
 	  try{
-		  if(!req.user || !req.user.avatar){
-          throw new Error()
+		   if(req.header('Authorization')){
+            const token = req.header('Authorization').replace('Bearer ', '')
+		    const decoded = jwt.verify(token, process.env.SECRET_KEY)
+            const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
 		 }
 		 res.set('Content-Type', 'image/png')
-	     res.send(req.user.avatar)
+	     res.send(user.avatar)
 	   
 	     } catch(e) {
 		 res.status(404).send()
