@@ -180,7 +180,7 @@ router.patch('/users/me/password', auth, async (req, res) => {
     try {
         //const user = await User.findById(req.params.id)
         const user = req.user
-        user[update] = req.body[update])
+        user[password] = req.body[password])
         await user.save()
         res.send(user)
     } catch (e) {
